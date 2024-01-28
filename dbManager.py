@@ -119,7 +119,7 @@ class Database:
     #     results = c.fetchall()
     #     return numpy.asarray(results)
     
-db = Database("nba.db")
+# db = Database("nba.db")
 
-selectResult = db.select("Devin Booker", orderBy="date")
-print(selectResult.shape)
+# selectResult = db.select("Devin Booker", orderBy="date")
+# print(selectResult.shape)

@@ -1,2 +1,1 @@
-
-app = QApplication(sys.argv)
+NBA
