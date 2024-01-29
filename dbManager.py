@@ -100,6 +100,7 @@ class Database:
         return numpy.asarray(results)
     
     def select(self, fromTable:str, select = "*", orderBy = "") -> numpy.ndarray:
+        #if orderBy exist then add order to statment
         if orderBy.strip():
             orderBy = "ORDER BY " + orderBy
         else:
@@ -113,13 +114,21 @@ class Database:
         results = c.fetchall()
         return numpy.asarray(results)
     
+    def selectColumnNames(self,table_name:str) -> list:
+        c = self.getCursor()
+        c.execute(f'''PRAGMA table_info({table_name.replace(" ", "_")})''')
+        
+        results = c.fetchall()
+        return numpy.asarray(results)
+        
+        
     # def select(self, selectStmt:str) -> numpy.ndarray:
     #     c = self.getCursor()
     #     c.execute(f'''{selectStmt}''')
     #     results = c.fetchall()
     #     return numpy.asarray(results)
     
-# db = Database("nba.db")
+db = Database("nba.db")
 
-# selectResult = db.select("Devin Booker", orderBy="date")
-# print(selectResult.shape)
+selectResult = db.selectColumnNames("Devin Booker")
+print(selectResult)
