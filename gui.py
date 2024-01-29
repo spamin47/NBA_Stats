@@ -5,6 +5,7 @@ from PyQt6.QtGui import QIcon
 import pandas as pd
 from PyQt6.QtCore import Qt
 import dbManager
+import numpy as np
 
 
 
@@ -76,11 +77,13 @@ class MyApp(QWidget):
         #declare widgets
         self.table = QTableWidget()
         load_button = QPushButton("Load")
+        export_btn = QPushButton("Export")
         self.title = QLabel("Basement")
         label_order = QLabel("Order")
         tb_input_name = QTextEdit("Devin Booker")
         mainMenu_button = QPushButton("Main Menu")
         dropdown_order = QComboBox()
+        
         
         
         #check buttons
@@ -155,6 +158,7 @@ class MyApp(QWidget):
         #connect buttons
         mainMenu_button.clicked.connect(lambda: self.switchToMainMenu())
         load_button.clicked.connect(lambda: self.loadTable(tb_input_name.toPlainText(),dropdown_order.currentText(),dropdown_order))
+        export_btn.clicked.connect(lambda: self.exportData())       
         
         #add widgets
         #left Frame
@@ -163,6 +167,8 @@ class MyApp(QWidget):
         topLeftFrame_layout.addWidget(self.title)
         botLeftFrame_layout_H.addWidget(load_button)
         botLeftFrame_layout_H.addWidget(tb_input_name)
+        botLeftFrame_layout_H.addWidget(export_btn)
+        
         
         self.database_frame_layout.addWidget(mainFrame)
         mainFrame_layout_H.addWidget(leftFrame)
@@ -221,6 +227,7 @@ class MyApp(QWidget):
         try:
             #generate select statment
             selectResult = self.db.select(name, select= ",".join(str(e) for e in sql_column_names[26:]), orderBy=order)
+            self.dataMatrix = selectResult
             #set table
             self.setTable(headerLabels,selectResult)
         except:
@@ -230,12 +237,15 @@ class MyApp(QWidget):
         dropdown.clear()
         dropdown.addItems(sql_column_names[26:])
         dropdown.update()
-            
-        
+    #export csv file
+    def exportData(self):
+        df = pd.DataFrame(self.dataMatrix)
+        df.to_csv("data.csv",index=False)
+           
         
 
     #Set table
-    def setTable(self,headerLabels:list,matrix):
+    def setTable(self,headerLabels:list,matrix:np.ndarray):
         self.table.clear()
         self.table.setColumnCount(len(headerLabels))
         self.table.setRowCount(matrix.shape[0])
