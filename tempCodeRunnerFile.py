@@ -1,7 +1,4 @@
-self.table.setRowCount(selectResult.shape[0])
-        self.table.setColumnCount(selectResult.shape[1])
-        self.table.setHorizontalHeaderLabels(defaultHeaderLabels)
-        for r in range(selectResult.shape[0]):
-            for c in range(selectResult.shape[1]):
-                tableItem = QTableWidgetItem(str(selectResult[r,c]))
-                self.table.setItem(r,c,tableItem)
+osterPageExtension = doc.find(string=" Roster ").parent['href']
+        # rosterWebpage = requests.get(mainPageUrl+rosterPageExtension)
+        # doc = BeautifulSoup(rosterWebpage.text,"html.parser")
+        # playerPosition = doc.find(string=f" {playerName} ").parent.parent.parent.parent.find_all("td")[2].find("span").string

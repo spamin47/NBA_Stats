@@ -41,13 +41,15 @@ for season in seasons:
         teamPageExtension = season.parent.parent.findAll("td")[1].find("a")['href']
         teamWebPage = requests.get(mainPageUrl + teamPageExtension)
         doc = BeautifulSoup(teamWebPage.text,"html.parser")
+        
         rosterPageExtension = doc.find(string=" Roster ").parent['href']
-        rosterWebpage = requests.get(mainPageUrl+rosterPageExtension)
+        rosterWebpage = requests.get(mainPageUrl+rosterPageExtension,timeout=5)
         doc = BeautifulSoup(rosterWebpage.text,"html.parser")
         playerPosition = doc.find(string=f" {playerName} ").parent.parent.parent.parent.find_all("td")[2].find("span").string
     except:
         print("cannot access link")
     
+    playerPosition = "NULL"
     
     seasonYearPageExtension = season['href']
     #Season Stats Page
